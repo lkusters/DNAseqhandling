@@ -47,6 +47,7 @@ def seqgenerator(filenames_list):
                     yield str(record.seq)
             elif checkextension[-2] == 'fastq':
                 for record in SeqIO.parse(handle, 'fastq'):
+                    warnings.warn(str(record.description))
                     yield str(record.seq)
             else:
                 raise ValueError("filename extension {0} not recognised"
