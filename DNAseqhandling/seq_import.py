@@ -44,25 +44,10 @@ def seqgenerator(filenames_list):
 
     elif cur_version.major == 3:
         for filename in filenames_list:
-            # first check if it is zipped!
-            checkextension = filename.split('.')
-            if checkextension[-1] == 'gz':
-                handle = gzip.open(filename, 'rt')
-                checkextension.pop(-1)
-            else:
-                handle = open(filename, 'rt')
-
-            if checkextension[-1] == 'fna' or checkextension[-1] == 'fa':
-                for record in SeqIO.parse(handle, 'fasta'):
-                    # sys.stderr.write(str(record.description)+'\n')
-                    yield str(record.seq)
-            elif checkextension[-1] == 'fastq':
-                for record in SeqIO.parse(handle, 'fastq'):
-                    # sys.stderr.write(str(record.description)+'\n')
-                    yield str(record.seq)
-            else:
-                raise ValueError("filename extension {0} not recognised"
-                                 .format(checkextension[-1]))
+            handle, fileformat = _openile(filename)
+            for record in SeqIO.parse(handle, fileformat):
+                # sys.stderr.write(str(record.description)+'\n')
+                yield str(record.seq)
 
     else:
         raise EnvironmentError("python version {0} incompatible with code"
@@ -118,3 +103,28 @@ def recordgenerator(filenames_list):
     else:
         raise EnvironmentError("python version {0} incompatible with code"
                                .format(cur_version))
+
+
+def _openile(filename):
+    """ Open file (that is possibly zipped) and return file handle and
+    extension
+
+    We assume that the version is python3
+    1) we check whether it is zip-file and unzip if needbe
+    """
+
+    checkextension = filename.split('.')
+    if checkextension[-1] == 'gz':
+        handle = gzip.open(filename, 'rt')
+        checkextension.pop(-1)
+    else:
+        handle = open(filename, 'rt')
+
+    if checkextension[-1] == 'fna' or checkextension[-1] == 'fa':
+        fileformat = 'fasta'
+    elif checkextension[-1] == 'fastq':
+        fileformat = 'fastq'
+    else:
+        raise ValueError("filename extension {0} not recognised"
+                         .format(checkextension[-1]))
+    return handle, fileformat
