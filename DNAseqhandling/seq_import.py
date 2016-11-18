@@ -54,11 +54,11 @@ def seqgenerator(filenames_list):
 
             if checkextension[-1] == 'fna' or checkextension[-1] == 'fa':
                 for record in SeqIO.parse(handle, 'fasta'):
-                    sys.stderr.write(str(record.description)+'\n')
+                    # sys.stderr.write(str(record.description)+'\n')
                     yield str(record.seq)
             elif checkextension[-1] == 'fastq':
                 for record in SeqIO.parse(handle, 'fastq'):
-                    sys.stderr.write(str(record.description)+'\n')
+                    # sys.stderr.write(str(record.description)+'\n')
                     yield str(record.seq)
             else:
                 raise ValueError("filename extension {0} not recognised"
