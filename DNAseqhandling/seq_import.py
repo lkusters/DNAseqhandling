@@ -24,14 +24,14 @@ def seqgenerator(filenames_list):
                       .format(cur_version)
                       )
         for filename in filenames_list:
-            handle, fileformat = _openile2(filename)
+            handle, fileformat = _openfile2(filename)
             for record in SeqIO.parse(handle, fileformat):
                 # sys.stderr.write(str(record.description)+'\n')
                 yield str(record.seq)
 
     elif cur_version.major == 3:
         for filename in filenames_list:
-            handle, fileformat = _openile(filename)
+            handle, fileformat = _openfile(filename)
             for record in SeqIO.parse(handle, fileformat):
                 # sys.stderr.write(str(record.description)+'\n')
                 yield str(record.seq)
@@ -49,13 +49,13 @@ def recordgenerator(filenames_list):
 
     if cur_version.major == 2 and cur_version.minor == 7:
         for filename in filenames_list:
-            handle, fileformat = _openile2(filename)
+            handle, fileformat = _openfile2(filename)
             for record in SeqIO.parse(handle, 'fasta'):
                 yield record
 
     elif cur_version.major == 3:
         for filename in filenames_list:
-            handle, fileformat = _openile(filename)
+            handle, fileformat = _openfile(filename)
             for record in SeqIO.parse(handle, 'fasta'):
                 yield record
 
@@ -64,7 +64,7 @@ def recordgenerator(filenames_list):
                                .format(cur_version))
 
 
-def _openile(filename):
+def _openfile(filename):
     """ Open file (that is possibly zipped) and return file handle and
     extension
 
@@ -90,7 +90,7 @@ def _openile(filename):
     return handle, fileformat
 
 
-def _openile2(filename):
+def _openfile2(filename):
     """ Open file for python2
     Open file (that is possibly zipped) and return file handle and
     extension
