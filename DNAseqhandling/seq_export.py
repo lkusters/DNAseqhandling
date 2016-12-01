@@ -46,10 +46,10 @@ def recordwrite(records, filename):
             with open(filename, 'r') as f_in:
                 with gzip.open(filename+'.gz', 'w') as f_out:
                     shutil.copyfileobj(f_in, f_out)
-            # os.remove(filename)  # remove the fastq file s.t. only gz remains
+            os.remove(filename)  # remove the fastq file s.t. only gz remains
         elif cur_version.major == 3:
             with open(filename, 'rb') as f_in:
                 with gzip.open(filename+'.gz', 'wb') as f_out:
                     shutil.copyfileobj(f_in, f_out)
-            # os.remove(filename)  # remove the fastq file s.t. only gz remains
+            os.remove(filename)  # remove the fastq file s.t. only gz remains
     return 1
