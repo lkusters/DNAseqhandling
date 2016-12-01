@@ -50,13 +50,13 @@ def recordgenerator(filenames_list):
     if cur_version.major == 2 and cur_version.minor == 7:
         for filename in filenames_list:
             handle, fileformat = _openfile2(filename)
-            for record in SeqIO.parse(handle, 'fasta'):
+            for record in SeqIO.parse(handle, fileformat):
                 yield record
 
     elif cur_version.major == 3:
         for filename in filenames_list:
             handle, fileformat = _openfile(filename)
-            for record in SeqIO.parse(handle, 'fasta'):
+            for record in SeqIO.parse(handle, fileformat):
                 yield record
 
     else:
